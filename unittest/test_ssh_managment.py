@@ -58,14 +58,15 @@ class TestSSHManagement(unittest.TestCase):
             ['hostname2', 'username2', 'description2']
         ]
         
-        mock_run.return_value = MagicMock(returncode=0)
+        mock_run.side_effect = [MagicMock(returncode=0), MagicMock(returncode=0)]  # Two calls expected
         key_path = '/home/runner/.ssh/id_rsa'
         
         with patch('ssh_managment.add_ssh_key', return_value='id_rsa'):
             ssh_managment.main_script()
         
         mock_print.assert_any_call("Ausgewählter Hostname: hostname1, Username: username1")
-        mock_run.assert_called_once_with(f'ssh username1@hostname1', shell=True)
+        mock_run.assert_any_call('start-ssh-agent.cmd', shell=True, check=True)
+        mock_run.assert_any_call(f'ssh username1@hostname1', shell=True)
 
 if __name__ == '__main__':
     unittest.main()
