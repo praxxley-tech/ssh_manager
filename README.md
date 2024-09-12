@@ -24,6 +24,5 @@ Dieses Python-Skript liest eine CSV-Datei mit Hostinformationen, erlaubt dem Ben
    ```sh
    pip install prettytable
 
-## CSV-Datei muss wie folgt aussehen:
-hostname1,username1,description1\n
-hostname2,username2,description2\n
+## Inhalt der CSV-Datei muss wie folgt aussehen:
+ `hostname1,username1,description1`
