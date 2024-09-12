@@ -1,6 +1,6 @@
-# SSH-Verbindungsskript
-
 ![Code Coverage](https://img.shields.io/badge/coverage-passed-brightgreen)  <!-- Badge für Code Coverage -->
+
+# SSH-Verbindungsskript
 
 ## Überblick
 
@@ -25,5 +25,5 @@ Dieses Python-Skript liest eine CSV-Datei mit Hostinformationen, erlaubt dem Ben
    pip install prettytable
 
 ## CSV-Datei muss wie folgt aussehen:
-**hostname1,username1,description1**
-**hostname2,username2,description2**
+hostname1,username1,description1
+hostname2,username2,description2
