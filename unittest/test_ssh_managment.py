@@ -2,8 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import subprocess
 import os
-
-from ssh_managment import ssh_managment
+import ssh_managment
 
 class TestSSHManagement(unittest.TestCase):
 
@@ -27,7 +26,7 @@ class TestSSHManagement(unittest.TestCase):
         mock_listdir.return_value = ['id_rsa', 'id_rsa.pub']
         mock_run.return_value = MagicMock(returncode=0)
 
-        with patch('builtins.input', return_value='1'): 
+        with patch('ssh_managment.get_user_input', return_value='1'): 
             selected_key = ssh_managment.add_ssh_key()
         
         self.assertEqual(selected_key, 'id_rsa')
@@ -39,16 +38,17 @@ class TestSSHManagement(unittest.TestCase):
         mock_listdir.return_value = ['id_rsa', 'id_rsa.pub']
         mock_run.side_effect = subprocess.CalledProcessError(1, 'ssh-add ~/.ssh/id_rsa')
 
-        with patch('builtins.input', return_value='1'):  
+        with patch('ssh_managment.get_user_input', return_value='1'):  
             selected_key = ssh_managment.add_ssh_key()
         
         self.assertIsNone(selected_key)
         mock_run.assert_called_once_with('ssh-add ~/.ssh/id_rsa', shell=True, check=True)
 
-    @patch('subprocess.run')
-    @patch('builtins.input', side_effect=[1])  
+    @patch('builtins.print')
+    @patch('ssh_managment.get_user_input', side_effect=['1'])
     @patch('csv.reader')
-    def test_main_script_flow(self, mock_csv_reader, mock_input, mock_run):
+    @patch('subprocess.run')
+    def test_main_script_flow(self, mock_run, mock_csv_reader, mock_input, mock_print):
         mock_csv_reader.return_value = [
             ['hostname1', 'username1', 'description1'],
             ['hostname2', 'username2', 'description2']
@@ -56,8 +56,7 @@ class TestSSHManagement(unittest.TestCase):
         
         mock_run.return_value = MagicMock(returncode=0)
         
-        with patch('builtins.print') as mock_print:
-            ssh_managment.main_script() 
+        ssh_managment.main_script()
         
         mock_print.assert_any_call("Ausgewählter Hostname: hostname1, Username: username1")
         mock_run.assert_called_once_with('ssh username1@hostname1', shell=True)
