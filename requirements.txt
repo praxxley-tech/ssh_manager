@@ -8,5 +8,5 @@ python-dateutil==2.9.0.post0
 six==1.16.0
 validator==0.7.1
 wcwidth==0.2.13
-coverage==7.2.6
-coveralls==1.0.0
+coverage
+coveralls
